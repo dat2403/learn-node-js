@@ -53,6 +53,25 @@ router.post('/login', async (req, res) => {
 
     res.status(401).json(createResponse(errorUnAuthorizeMessage))
 })
+router.get('/', authenticationMiddle, async (req, res) => {
+    const users = await UserModel.find({})
+    res.json(createResponse(successMessage, users?.map((item) => pickPropertyUser(item))))
+})
+
+router.get('/profile', authenticationMiddle, async (req, res) => {
+    const user = req.user
+    res.json(createResponse(successMessage, pickPropertyUser(user)))
+})
+
+router.delete('/', async (req, res) => {
+    try {
+        await UserModel.deleteMany({})
+        res.json(createResponse(successMessage))
+    } catch (e) {
+        res.status(400).json(createResponse(e.message))
+    }
+})
+
 
 router.post('/register', async (req, res) => {
     const {username, password, rePassword} = req.body
