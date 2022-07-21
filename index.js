@@ -3,7 +3,8 @@ import 'dotenv/config'
 import mongoose from 'mongoose'
 import authRoute from "./src/routes/authRoute.js";
 import postRoute from "./src/routes/postRoute.js";
-
+import novelRoute from "./src/routes/novelRoute.js";
+import {saveToDatabase} from "./src/crawler/crawler.js";
 await connectDb()
 
 const app = express()
@@ -11,7 +12,8 @@ app.use(express.json())
 
 app.use("/api/v1/auth", authRoute)
 app.use("/api/v1/post", postRoute)
-
+app.use("/api/v1/novels", novelRoute)
+// await saveToDatabase()
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
     console.log(`Server start at port ${PORT}`)
